@@ -7,11 +7,13 @@ To implement the encoder, I first converted the given key into a new key based o
 
 To encrypt the plaintext, I looped through every character of the plaintext. In each loop, I first check if the current character is special. If so, I simply append it to the new encrypted text. If the character is of the alphabet, I convert the character to its Unicode integer equivalent. Then, I check if the character is lower case. If so, I subtract 32 from the code to get its upper case equivalent in order to calculate the encryption based on upper case characters for the time being. The encryption of each character is calculated by adding the code of the plaintext character to the code of the corresponding character in the new key, then modulo 26. After, I add the code for the letter ‘A’ to this value to get the encrypted letter. If the original letter was lower case, then I add 32 back to the value as well. This letter is then appended to the new encrypted text.
 
+
 Task 2: Implement the Vigenère cipher decoder
 
 To implement the decoder, I first converted the given key into the new key based on the cipher text the same way described in Task 1.
 
 In the decryption loop, I did the same process described for encryption in Task 1 except for the code calculation. To go from an encrypted character to its original, I subtract the encrypted character code by the corresponding character code in the new key, add 26, then modulo 26. Special characters and lower case characters are handled the same way as in Task 1.
+
 
 Task 3: Break the Vigenère cipher, knowing the key length
 
@@ -32,11 +34,14 @@ chi_squared_test(actual_frequencies, observed_frequencies) – Calculates the ch
 break_with_key_length(cipher_text, key_length) – Generates the key based on the smallest chi-squared value of each coset. Loops through the key length, and for each coset appends the letter returned in the tuple from the find_smallest_chi_squared() method each loop to the result. This returns a string.
 
 
+
 Task 4: Completely break the Vigenère cipher
 
-	To break the cipher without knowing the key length, I utilized two methods: Kasiski’s method and the index of coincidence. Kasiski’s method attempts to find the most likely key lengths based on repeated substrings in the cipher text. For any repeated substring, the distance between the duplicates is likely to be a multiple of the actual key length. So, after finding all distances of repeated substrings, we can break each distance into its factors. The factors that occur the most often are likely candidates for the actual key length. Out of these possible candidates, I then utilize the idea of the index of coincidence to choose the most likely key length.
-	Given a text string, the index of coincidence (IC) is the probability of two randomly selected letters being equal. The IC of general English text is 0.066332. The IC of randomly generated text would be 0.038466. We can apply this to out problem by calculating IC’s for given cosets. For any given key length, we can generate all the cosets that would result and find the IC for each coset. Then, we can take the average IC of all the cosets and use that to represent the IC of a given key length. The key length that provides the highest average IC is most likely to be the actual key length of the cipher.
-	After finding the key length, we can just run the break_with_key_length() method in Task 3 to find the actual key. The Vigenère cipher has now been broken.
+To break the cipher without knowing the key length, I utilized two methods: Kasiski’s method and the index of coincidence. Kasiski’s method attempts to find the most likely key lengths based on repeated substrings in the cipher text. For any repeated substring, the distance between the duplicates is likely to be a multiple of the actual key length. So, after finding all distances of repeated substrings, we can break each distance into its factors. The factors that occur the most often are likely candidates for the actual key length. Out of these possible candidates, I then utilize the idea of the index of coincidence to choose the most likely key length.
+
+Given a text string, the index of coincidence (IC) is the probability of two randomly selected letters being equal. The IC of general English text is 0.066332. The IC of randomly generated text would be 0.038466. We can apply this to out problem by calculating IC’s for given cosets. For any given key length, we can generate all the cosets that would result and find the IC for each coset. Then, we can take the average IC of all the cosets and use that to represent the IC of a given key length. The key length that provides the highest average IC is most likely to be the actual key length of the cipher.
+
+After finding the key length, we can just run the break_with_key_length() method in Task 3 to find the actual key. The Vigenère cipher has now been broken.
 
 Function descriptions:
 calculate_index_of_coincidence(coset) – Calculates the average index of coincidence of a given coset. This returns a float.
